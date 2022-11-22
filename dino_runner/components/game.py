@@ -36,7 +36,7 @@ class Game:
 
     def draw(self):
         self.clock.tick(FPS)
-        self.screen.fill((255, 255, 255))
+        self.screen.fill(("#E0FFFF"))
         self.draw_background()
         self.player.draw(self.screen)
         pygame.display.update()
