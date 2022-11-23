@@ -41,7 +41,7 @@ class Game:
 
     def draw(self):
         self.clock.tick(FPS)
-        self.screen.fill(("#E0FFFF"))
+        self.screen.fill(("#F0FFFF"))#troquei a cor dnv
         self.draw_background()
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
