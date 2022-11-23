@@ -1,0 +1,4 @@
+Sempre que importar ter uma linha em branco entre as importações
+Separar com duas linhan em branco antes de começar uma class
+Separar com uma linha em branca entre metodos da mesma classe
+Separar bloco de lógica(if, for, while) com uma linha em branco
