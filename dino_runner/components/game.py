@@ -4,8 +4,6 @@ from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, T
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 
-FONT_STYLE = "freesansbold.ttf"
-
 class Game:
     def __init__(self):
         pygame.init()
@@ -37,6 +35,9 @@ class Game:
         # Game loop: events - update - draw
         self.playing = True
         self.obstacle_manager.reset_obstacles()
+        self.score = 0
+        self.game_speed = 20 #Quando inicia o run denovo ele reseta os valores
+        
         while self.playing:
             self.events()
             self.update()
@@ -58,16 +59,27 @@ class Game:
         self.score += 1
         if self.score % 100 == 0:
             self.game_speed += 5
+    
+    def write_text(self, past_text, color, text_center, font_style = "freesansbold.ttf", font_size = 22):
+        font = pygame.font.Font(font_style, font_size)
+        text = font.render(past_text, True, color)
+        text_rect = text.get_rect()             #Criei a função de escrever texto
+        text_rect.center = text_center
+        self.screen.blit(text, text_rect)
 
     def draw(self):
         self.clock.tick(FPS)
-        self.screen.fill(("#F0FFFF"))#troquei a cor dnv
         self.draw_background()
         self.player.draw(self.screen)
         self.draw_score()
         self.obstacle_manager.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
+
+        if self.score > 500:
+            self.screen.fill(("#000000"))
+        else:
+            self.screen.fill(("#F0FFFF"))
 
     def draw_background(self):
         image_width = BG.get_width()
@@ -79,11 +91,12 @@ class Game:
         self.x_pos_bg -= self.game_speed
 
     def draw_score(self):
-        font = pygame.font.Font(FONT_STYLE, 22)
-        text = font.render(f"Score: {self.score}", True, (0,0,0))
-        text_rect = text.get_rect()
-        text_rect.center = (1000, 50)
-        self.screen.blit(text, text_rect)
+        if self.score > 500:
+            color = ("#F0FFFF")
+        else:
+            color = ("#000000")
+            
+        self.write_text(f"Score: {self.score}", color, (1000, 50))
 
     def handle_events_on_menu(self):
         for event in pygame.event.get():
@@ -96,20 +109,16 @@ class Game:
     def show_menu(self):
         self.screen.fill((255,255,255))
         half_screen_heigth = SCREEN_HEIGHT // 2
-        half_screen_width = SCREEN_WIDTH //2
+        half_screen_width = SCREEN_WIDTH // 2
 
         if self.death_count == 0:
-            font = pygame.font.Font(FONT_STYLE, 22)
-            text = font.render("Press any key to start", True, (0,0,0))
-            text_rect = text.get_rect()
-            text_rect.center = (half_screen_width, half_screen_heigth)
-            self.screen.blit(text, text_rect)
+            self.write_text("Press any key to start", (0,0,0), (half_screen_width, half_screen_heigth))
+
         else:
-            ## "Press any key to restart"
-            ## Mostrar o score atingido e death_count
-            # Quando reiniciar, resetar o game_speed e score
-            # Método reutilizavel para desenhar os textos
-            self.screen.blit(ICON, (half_screen_width - 20, half_screen_heigth - 50))
+            self.write_text(f"Press any key to restart", (0,0,0), (half_screen_width, half_screen_heigth))
+            self.write_text(f"Score: {self.score}", (0,0,0), (half_screen_width, half_screen_heigth + 50), font_size=18 )
+            self.write_text(f"Deaths: {self.death_count}", (0,0,0), (half_screen_width, half_screen_heigth + 80), font_size=18)
+
 
         pygame.display.update()
         self.handle_events_on_menu()
