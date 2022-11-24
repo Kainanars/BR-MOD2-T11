@@ -1,9 +1,17 @@
 import random
 
-from dino_runner.utils.constants import LARGE_CACTUS, SMALL_CACTUS
+from dino_runner.utils.constants import LARGE_CACTUS, SMALL_CACTUS, POKEMON_T
 from dino_runner.components.obstacles.obstacle import Obstacle
+from dino_runner.components.dinosaur import Dinosaur
 
-cactus_list = [(LARGE_CACTUS, 300),(SMALL_CACTUS, 325),]
+
+cactus_list = []
+
+while Dinosaur().mode_pokemon:
+   cactus_list = [(POKEMON_T, 300),(POKEMON_T, 300),]
+else:
+   cactus_list = [(LARGE_CACTUS, 300),(SMALL_CACTUS, 325),]
+
 
 
 class Cactus(Obstacle):

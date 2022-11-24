@@ -1,6 +1,6 @@
 import pygame
 
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
+from dino_runner.utils.constants import BG, BG_POKEMON, CLOUD, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 
@@ -20,6 +20,7 @@ class Game:
         self.y_pos_bg = 380
         self.player = Dinosaur()
         self.obstacle_manager = ObstacleManager()
+        self.mode_pokemon = Dinosaur().mode_pokemon
 
     def execute(self):
         self.running = True
@@ -58,7 +59,7 @@ class Game:
     def update_score(self):
         self.score += 1
         if self.score % 100 == 0:
-            self.game_speed += 5
+            self.game_speed += 2
     
     def write_text(self, past_text, color, text_center, font_style = "freesansbold.ttf", font_size = 22):
         font = pygame.font.Font(font_style, font_size)
@@ -76,17 +77,23 @@ class Game:
         pygame.display.update()
         pygame.display.flip()
 
-        if self.score > 500:
+        if self.mode_pokemon:
+            self.screen.fill(("#1E90FF"))
+        elif self.score > 500:
             self.screen.fill(("#000000"))
         else:
-            self.screen.fill(("#F0FFFF"))
+            self.screen.fill(("#FFFFFF"))
 
     def draw_background(self):
-        image_width = BG.get_width()
-        self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg))
-        self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
+        if self.mode_pokemon:
+            img = BG_POKEMON
+        else:
+            img = BG
+        image_width = img.get_width()
+        self.screen.blit(img, (self.x_pos_bg, self.y_pos_bg))
+        self.screen.blit(img, (image_width + self.x_pos_bg, self.y_pos_bg))
         if self.x_pos_bg <= -image_width:
-            self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
+            self.screen.blit(img, (image_width + self.x_pos_bg, self.y_pos_bg))
             self.x_pos_bg = 0
         self.x_pos_bg -= self.game_speed
 
@@ -113,12 +120,10 @@ class Game:
 
         if self.death_count == 0:
             self.write_text("Press any key to start", (0,0,0), (half_screen_width, half_screen_heigth))
-
         else:
             self.write_text(f"Press any key to restart", (0,0,0), (half_screen_width, half_screen_heigth))
             self.write_text(f"Score: {self.score}", (0,0,0), (half_screen_width, half_screen_heigth + 50), font_size=18 )
             self.write_text(f"Deaths: {self.death_count}", (0,0,0), (half_screen_width, half_screen_heigth + 80), font_size=18)
-
 
         pygame.display.update()
         self.handle_events_on_menu()

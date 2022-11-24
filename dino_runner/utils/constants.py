@@ -16,6 +16,11 @@ RUNNING = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun2.png")),
 ]
 
+RUNNING_CHARMANDER = [
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/Charmander1.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/Charmander2.png")),
+]
+
 RUNNING_SHIELD = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun1Shield.png")),
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun2.png")),
@@ -27,12 +32,18 @@ RUNNING_HAMMER = [
 ]
 
 JUMPING = pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoJump.png"))
+JUMPING_CHARMANDER = pygame.image.load(os.path.join(IMG_DIR, "Dino/CharmanderJump.png"))
 JUMPING_SHIELD = pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoJumpShield.png"))
 JUMPING_HAMMER = pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoJumpHammer.png"))
 
 DUCKING = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoDuck1.png")),
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoDuck2.png")),
+]
+
+DUCKING_CHARMANDER = [
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/CharmanderDuck1.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/CharmanderDuck2.png")),
 ]
 
 DUCKING_SHIELD = [
@@ -56,16 +67,29 @@ LARGE_CACTUS = [
     pygame.image.load(os.path.join(IMG_DIR, "Cactus/LargeCactus3.png")),
 ]
 
+POKEMON_T = [
+    pygame.image.load(os.path.join(IMG_DIR, "Pokemons/Pokemon1.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Pokemons/Pokemon2.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Pokemons/Pokemon3.png")),
+]
+
 BIRD = [
     pygame.image.load(os.path.join(IMG_DIR, "Bird/Bird1.png")),
     pygame.image.load(os.path.join(IMG_DIR, "Bird/Bird2.png")),
+]
+
+AERO = [
+    pygame.image.load(os.path.join(IMG_DIR, "Bird/Aero1.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Bird/Aero2.png")),
 ]
 
 CLOUD = pygame.image.load(os.path.join(IMG_DIR, 'Other/Cloud.png'))
 SHIELD = pygame.image.load(os.path.join(IMG_DIR, 'Other/shield.png'))
 HAMMER = pygame.image.load(os.path.join(IMG_DIR, 'Other/hammer.png'))
 
+BG_POKEMON = pygame.image.load(os.path.join(IMG_DIR, 'Other/Forest.jpg'))
 BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
+
 
 HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
 
