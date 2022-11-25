@@ -1,9 +1,9 @@
 import pygame
 
-from dino_runner.utils.constants import BG, BG_POKEMON, CLOUD, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
+from dino_runner.utils.constants import BG, BG_POKEMON, CLOUD, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
-
+from dino_runner.components.power_ups.power_up_manager import PowerUpManager
 class Game:
     def __init__(self):
         pygame.init()
@@ -20,7 +20,7 @@ class Game:
         self.y_pos_bg = 380
         self.player = Dinosaur()
         self.obstacle_manager = ObstacleManager()
-        self.mode_pokemon = Dinosaur().mode_pokemon
+        self.power_up_manager = PowerUpManager()
 
     def execute(self):
         self.running = True
@@ -35,6 +35,7 @@ class Game:
     def run(self):
         # Game loop: events - update - draw
         self.playing = True
+        self.power_up_manager.reset_power_ups()
         self.obstacle_manager.reset_obstacles()
         self.score = 0
         self.game_speed = 20 #Quando inicia o run denovo ele reseta os valores
@@ -55,6 +56,7 @@ class Game:
         self.player.update(user_input)
         self.obstacle_manager.update(self)
         self.update_score()
+        self.power_up_manager.update(self.score, self.game_speed, self.player)
 
     def update_score(self):
         self.score += 1
@@ -73,22 +75,21 @@ class Game:
         self.draw_background()
         self.player.draw(self.screen)
         self.draw_score()
+        self.draw_power_up_time()
+        self.power_up_manager.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
 
-        if self.mode_pokemon:
-            self.screen.fill(("#1E90FF"))
-        elif self.score > 500:
-            self.screen.fill(("#000000"))
-        else:
-            self.screen.fill(("#FFFFFF"))
+       # if self.mode_pokemon:
+           # self.screen.fill(("#1E90FF"))
+        self.screen.fill(("#FFFFFF"))
 
     def draw_background(self):
-        if self.mode_pokemon:
-            img = BG_POKEMON
-        else:
-            img = BG
+        #if self.mode_pokemon:
+         #   img = BG_POKEMON
+        #else:
+        img = BG
         image_width = img.get_width()
         self.screen.blit(img, (self.x_pos_bg, self.y_pos_bg))
         self.screen.blit(img, (image_width + self.x_pos_bg, self.y_pos_bg))
@@ -98,12 +99,24 @@ class Game:
         self.x_pos_bg -= self.game_speed
 
     def draw_score(self):
-        if self.score > 500:
-            color = ("#F0FFFF")
-        else:
-            color = ("#000000")
+        color = ("#000000")
             
         self.write_text(f"Score: {self.score}", color, (1000, 50))
+
+    def draw_power_up_time(self):
+        if self.player.has_power_up:
+            time_to_show = round((self.player.power_up_time - pygame.time.get_ticks()) / 10000, 2)
+            if time_to_show >= 0:
+                if self.score > 500:
+                    color = ("#F0FFFF")
+                else:
+                    color = ("#000000")
+                    
+                self.write_text(
+                    f"{self.player.type.capitalize()} enabled for {time_to_show} seconds", (0,0,0), (500,40),font_size=18)
+            else:
+                self.player.has_power_up = False
+                self.player.type = DEFAULT_TYPE
 
     def handle_events_on_menu(self):
         for event in pygame.event.get():
