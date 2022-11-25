@@ -1,9 +1,11 @@
 import pygame
 
-from dino_runner.utils.constants import BG, BG_POKEMON, CLOUD, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
+from dino_runner.utils.constants import SOUND_POKEMON, SOUND, SOUND_GAME_OVER, SOUND_POKEBALL, SOUND_POWER_UP, BG_POKEMON, GAME_OVER, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, SCORE_TYPE, HEART_TYPE
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
 from dino_runner.components.power_ups.power_up_manager import PowerUpManager
+
+
 class Game:
     def __init__(self):
         pygame.init()
@@ -15,12 +17,21 @@ class Game:
         self.running = False
         self.game_speed = 20
         self.score = 0
+        self.score_boost = 0
+        self.max_score = 0
         self.death_count = 0
         self.x_pos_bg = 0
         self.y_pos_bg = 380
         self.player = Dinosaur()
         self.obstacle_manager = ObstacleManager()
         self.power_up_manager = PowerUpManager()
+        self.music = pygame.mixer.music.load(SOUND)
+        #self.music_pokemon = pygame.mixer.music.load(SOUND_POKEMON)
+        self.sound_game_over = pygame.mixer.Sound(SOUND_GAME_OVER)
+        self.sound_power_up = pygame.mixer.Sound(SOUND_POWER_UP)
+        self.sound_pokeball = pygame.mixer.Sound(SOUND_POKEBALL)
+        pygame.mixer.music.set_volume(0.05)
+        pygame.mixer.music.play(-1)
 
     def execute(self):
         self.running = True
@@ -30,20 +41,20 @@ class Game:
 
         pygame.display.quit()
         pygame.quit()
-
-
+    
     def run(self):
-        # Game loop: events - update - draw
         self.playing = True
         self.power_up_manager.reset_power_ups()
         self.obstacle_manager.reset_obstacles()
         self.score = 0
+        self.score_boost = 0
         self.game_speed = 20 #Quando inicia o run denovo ele reseta os valores
         
         while self.playing:
             self.events()
             self.update()
             self.draw()
+            self.update_max_score()
 
     def events(self):
         for event in pygame.event.get():
@@ -56,12 +67,16 @@ class Game:
         self.player.update(user_input)
         self.obstacle_manager.update(self)
         self.update_score()
-        self.power_up_manager.update(self.score, self.game_speed, self.player)
+        self.power_up_manager.update(self)
 
     def update_score(self):
         self.score += 1
         if self.score % 100 == 0:
             self.game_speed += 2
+
+    def update_max_score(self):
+        if (self.score + self.score_boost) > self.max_score:
+            self.max_score = (self.score + self.score_boost)
     
     def write_text(self, past_text, color, text_center, font_style = "freesansbold.ttf", font_size = 22):
         font = pygame.font.Font(font_style, font_size)
@@ -80,38 +95,25 @@ class Game:
         self.obstacle_manager.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
-
-       # if self.mode_pokemon:
-           # self.screen.fill(("#1E90FF"))
-        self.screen.fill(("#FFFFFF"))
+        self.screen.fill(("#87CEEB"))
 
     def draw_background(self):
-        #if self.mode_pokemon:
-         #   img = BG_POKEMON
-        #else:
-        img = BG
-        image_width = img.get_width()
-        self.screen.blit(img, (self.x_pos_bg, self.y_pos_bg))
-        self.screen.blit(img, (image_width + self.x_pos_bg, self.y_pos_bg))
+        image_width = BG_POKEMON.get_width()
+        self.screen.blit(BG_POKEMON, (self.x_pos_bg, self.y_pos_bg))
+        self.screen.blit(BG_POKEMON, (image_width + self.x_pos_bg, self.y_pos_bg))
         if self.x_pos_bg <= -image_width:
-            self.screen.blit(img, (image_width + self.x_pos_bg, self.y_pos_bg))
+            self.screen.blit(BG_POKEMON, (image_width + self.x_pos_bg, self.y_pos_bg))
             self.x_pos_bg = 0
         self.x_pos_bg -= self.game_speed
 
     def draw_score(self):
         color = ("#000000")
-            
-        self.write_text(f"Score: {self.score}", color, (1000, 50))
+        self.write_text(f"Max Score: {self.max_score} | Score: {self.score + self.score_boost}", color, (930, 50), font_style="Score.ttf", font_size=18)
 
     def draw_power_up_time(self):
         if self.player.has_power_up:
             time_to_show = round((self.player.power_up_time - pygame.time.get_ticks()) / 10000, 2)
-            if time_to_show >= 0:
-                if self.score > 500:
-                    color = ("#F0FFFF")
-                else:
-                    color = ("#000000")
-                    
+            if time_to_show >= 0:                  
                 self.write_text(
                     f"{self.player.type.capitalize()} enabled for {time_to_show} seconds", (0,0,0), (500,40),font_size=18)
             else:
@@ -132,11 +134,12 @@ class Game:
         half_screen_width = SCREEN_WIDTH // 2
 
         if self.death_count == 0:
-            self.write_text("Press any key to start", (0,0,0), (half_screen_width, half_screen_heigth))
+            self.write_text("Press any key to start", "#00008B", (half_screen_width, half_screen_heigth), font_style="Pixel.ttf")    
         else:
-            self.write_text(f"Press any key to restart", (0,0,0), (half_screen_width, half_screen_heigth))
-            self.write_text(f"Score: {self.score}", (0,0,0), (half_screen_width, half_screen_heigth + 50), font_size=18 )
-            self.write_text(f"Deaths: {self.death_count}", (0,0,0), (half_screen_width, half_screen_heigth + 80), font_size=18)
-
+            self.screen.blit(GAME_OVER, (half_screen_width -195, half_screen_heigth -  140))
+            self.write_text(f"Press any key to restart", "#008000", (half_screen_width, half_screen_heigth), font_style="Pixel.ttf")
+            self.write_text(f"Score : {self.score + self.score_boost}", (0,0,0), (half_screen_width, half_screen_heigth + 50), font_style="Pixel.ttf", font_size=18 )
+            self.write_text(f"Max Score: {self.max_score}", (0,0,0), (half_screen_width, half_screen_heigth + 80), font_style="Pixel.ttf", font_size=18)
+            self.write_text(f"Deaths: {self.death_count}", (0,0,0), (half_screen_width, half_screen_heigth + 110), font_style="Pixel.ttf", font_size=18)
         pygame.display.update()
         self.handle_events_on_menu()

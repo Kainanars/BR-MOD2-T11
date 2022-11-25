@@ -16,11 +16,6 @@ RUNNING = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun2.png")),
 ]
 
-RUNNING_CHARMANDER = [
-    pygame.image.load(os.path.join(IMG_DIR, "Dino/Charmander1.png")),
-    pygame.image.load(os.path.join(IMG_DIR, "Dino/Charmander2.png")),
-]
-
 RUNNING_SHIELD = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun1Shield.png")),
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun2.png")),
@@ -31,19 +26,26 @@ RUNNING_HAMMER = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoRun2.png")),
 ]
 
+RUNNING_CHARMANDER = [
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/Charmander1.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/Charmander2.png")),
+]
+
+RUNNING_CHARIZARD = [
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/Charizard1 (2).png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/Charizard2 (2).png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/Charizard3 (2).png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/Charizard4 (2).png")),
+]
+
 JUMPING = pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoJump.png"))
-JUMPING_CHARMANDER = pygame.image.load(os.path.join(IMG_DIR, "Dino/CharmanderJump.png"))
 JUMPING_SHIELD = pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoJumpShield.png"))
 JUMPING_HAMMER = pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoJumpHammer.png"))
+JUMPING_CHARMANDER = pygame.image.load(os.path.join(IMG_DIR, "Dino/CharmanderJump.png"))
 
 DUCKING = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoDuck1.png")),
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoDuck2.png")),
-]
-
-DUCKING_CHARMANDER = [
-    pygame.image.load(os.path.join(IMG_DIR, "Dino/CharmanderDuck1.png")),
-    pygame.image.load(os.path.join(IMG_DIR, "Dino/CharmanderDuck2.png")),
 ]
 
 DUCKING_SHIELD = [
@@ -54,6 +56,11 @@ DUCKING_SHIELD = [
 DUCKING_HAMMER = [
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoDuck1Hammer.png")),
     pygame.image.load(os.path.join(IMG_DIR, "Dino/DinoDuck2.png")),
+]
+
+DUCKING_CHARMANDER = [
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/CharmanderDuck1.png")),
+    pygame.image.load(os.path.join(IMG_DIR, "Dino/CharmanderDuck1.png")),
 ]
 
 SMALL_CACTUS = [
@@ -86,13 +93,31 @@ AERO = [
 CLOUD = pygame.image.load(os.path.join(IMG_DIR, 'Other/Cloud.png'))
 SHIELD = pygame.image.load(os.path.join(IMG_DIR, 'Other/shield.png'))
 HAMMER = pygame.image.load(os.path.join(IMG_DIR, 'Other/hammer.png'))
+POKEBALL = pygame.image.load(os.path.join(IMG_DIR, 'Other/Pokeball.png'))
+POKEBALL2 = pygame.image.load(os.path.join(IMG_DIR, 'Other/Pokeball2.png'))
+HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/Heart.png'))
+SMALL_HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
+EXPLOSION = pygame.image.load(os.path.join(IMG_DIR, 'Other/explosion.png'))
+GAME_OVER = pygame.image.load(os.path.join(IMG_DIR, 'Other/GameOver.png'))
+SCORE = pygame.image.load(os.path.join(IMG_DIR, 'Other/coin.png'))
+
+
+SOUND = os.path.join(IMG_DIR, 'Sound/sound.mp3')
+SOUND_JUMP = os.path.join(IMG_DIR, 'Sound/jump.wav')
+SOUND_GAME_OVER = os.path.join(IMG_DIR, 'Sound/game_over.wav')
+SOUND_POKEBALL = os.path.join(IMG_DIR, 'Sound/pokeball.wav')
+SOUND_POWER_UP = os.path.join(IMG_DIR, 'Sound/coin.wav')
+SOUND_POKEMON = os.path.join(IMG_DIR, 'Sound/pokemon.mp3')
+
 
 BG_POKEMON = pygame.image.load(os.path.join(IMG_DIR, 'Other/Forest.jpg'))
 BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
 
 
-HEART = pygame.image.load(os.path.join(IMG_DIR, 'Other/SmallHeart.png'))
-
 DEFAULT_TYPE = "default"
 SHIELD_TYPE = "shield"
 HAMMER_TYPE = "hammer"
+CHARMANDER_TYPE = "charmander"
+CHARIZARD_TYPE = "charizard"
+HEART_TYPE = "heart"
+SCORE_TYPE = "score"
